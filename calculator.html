@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coal Emission Calculator</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+
+    <!-- Main container for the Calculator -->
+    <div class="calculator-container">
+        <h2>Coal Emission Calculator</h2>
+
+        <!-- Mining Emission Calculation -->
+        <div class="calculation-section">
+            <h3>MINING</h3>
+
+            <h4>Surface Mining</h4>
+            <label for="coalSurface">Amount of coal (metric tonne):</label>
+            <input type="number" id="coalSurface" name="coalSurface">
+
+            <h4>Underground Mining</h4>
+            <label for="coalUnderground">Amount of coal (metric tonne):</label>
+            <input type="number" id="coalUnderground" name="coalUnderground">
+        </div>
+
+        <!-- Transportation Emission Calculation -->
+        <div class="calculation-section">
+            <h3>TRANSPORTATION</h3>
+
+            <label for="distance">Distance (km):</label>
+            <input type="number" id="distance" name="distance">
+
+            <label for="coalTransport">Amount of coal (metric tonne):</label>
+            <input type="number" id="coalTransport" name="coalTransport">
+        </div>
+
+        <!-- Processing Emission Calculation -->
+        <div class="calculation-section">
+            <h3>PROCESSING</h3>
+
+            <label for="coalProcessing">Amount of coal (metric tonne):</label>
+            <input type="number" id="coalProcessing" name="coalProcessing">
+        </div>
+
+        <!-- Button to Calculate Emissions -->
+        <button onclick="calculateEmissions()">Calculate Emissions</button>
+
+        <!-- Result Display -->
+        <div id="result"></div>
+
+    </div>
+
+    <script>
+        function calculateEmissions() {
+            // Mining calculations
+            const coalSurface = parseFloat(document.getElementById('coalSurface').value) || 0;
+            const coalUnderground = parseFloat(document.getElementById('coalUnderground').value) || 0;
+            const surfaceEmission = coalSurface * (30 + 0.75 + 0.5); // Average values
+            const undergroundEmission = coalUnderground * (60 + 12.5 + 0.5); // Average values
+
+            // Transportation calculations
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const coalTransport = parseFloat(document.getElementById('coalTransport').value) || 0;
+            const transportEmission = (0.4 / 20) * distance * coalTransport * 2.71851;
+
+            // Processing calculations
+            const coalProcessing = parseFloat(document.getElementById('coalProcessing').value) || 0;
+            const electricityConsumption = 22.5 * 0.83019 * coalProcessing;
+            const fuelConsumption = 1.5 * 2.71851 * coalProcessing;
+            const processingEmission = electricityConsumption + fuelConsumption;
+
+            // Sum up all emissions
+            const totalEmission = surfaceEmission + undergroundEmission + transportEmission + processingEmission;
+
+            // Display the result
+            document.getElementById('result').innerHTML = `<h3>Total Emissions: ${totalEmission.toFixed(2)} kgCO2</h3>`;
+        }
+    </script>
+
+</body>
+</html>
